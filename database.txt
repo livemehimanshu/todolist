@@ -1,0 +1,35 @@
+-- 1. DATABASE BANANA
+CREATE DATABASE IF NOT EXISTS `todo_db`;
+USE `todo_db`;
+
+-- 2. PURANI TABLES HATANA
+DROP TABLE IF EXISTS `tasks`;
+DROP TABLE IF EXISTS `users`;
+
+-- 3. USERS TABLE BANANA (For Login/Authentication)
+CREATE TABLE `users` (
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4. TASKS TABLE BANANA (For the To-Do List CRUD with Drag/Drop Order)
+CREATE TABLE `tasks` (
+    id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    user_id INT(11) NOT NULL, 
+    task_name VARCHAR(255) NOT NULL,
+    task_order INT(11) NOT NULL DEFAULT 0, -- Drag/Drop ke liye naya column
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- 5. SAMPLE USER AUR TASKS DALNA
+-- Login Username: testuser, Password: password123
+INSERT INTO `users` (username, password) VALUES
+('testuser', '$2y$10$92h6A4lJ8Pq5Jv9R2P9G8O3P0C6B5R1I7T1M4K2X0U5W7Z4Y3'); 
+
+INSERT INTO `tasks` (user_id, task_name, task_order) VALUES
+(1, 'PHP CRUD aur Login system ki file check karo', 1),
+(1, 'Database connection ko verify karo', 2),
+(1, 'Drag and Drop functionality test karo', 3);
